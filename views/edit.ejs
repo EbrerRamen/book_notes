@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Edit Book</title>
+    <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+
+    <h1>Update Book</h1>
+
+    <!-- Form sends data to backend POST /add -->
+    <form action="/edit/<%= book.id %>" method="POST">
+
+        <!-- Title -->
+        <label>Title</label>
+        <input type="text" name="title" value="<%= book.title %>" required />
+
+        <!-- Author -->
+        <label>Author</label>
+        <input type="text" name="author" value="<%= book.author %>" />
+
+        <!-- ISBN -->
+        <label>ISBN</label>
+        <input type="text" name="isbn" value="<%= book.isbn %>" />
+
+        <!-- Book Cover Preview (from Open Library) -->
+        <p>Current Cover:</p>
+        <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" alt="Book Cover"
+            style="max-width: 150px;" />
+
+        <!-- Notes -->
+        <label>Notes</label>
+        <textarea name="notes"><%= book.notes %></textarea>
+
+        <!-- Rating -->
+        <label>Rating (1–5)</label>
+        <input type="number" name="rating" min="1" max="5" value="<%= book.rating %>" />
+
+        <br /><br />
+
+        <!-- Submit -->
+        <button type="submit">Update Book</button>
+
+    </form>
+
+    <br />
+    <a href="/">← Back to Home</a>
+
+</body>
+
+</html>
