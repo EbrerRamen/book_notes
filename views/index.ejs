@@ -40,9 +40,11 @@
 
 <% books.forEach(book=> { %>
     <div class="card">
-        <h2>
-            <%= book.title %>
-        </h2>
+        <a href="/book/<%= book.id %>">
+            <h2>
+                <%= book.title %>
+            </h2>
+        </a>
         <p>
             <%= book.author %>
         </p>
