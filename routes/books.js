@@ -18,3 +18,18 @@ router.get("/", async (req, res, next) => {
 router.get("/add", (req, res) => {
   res.render("add.ejs");
 });
+
+// Create book
+router.post("/add", async (req, res, next) => {
+  const { title, author, isbn, notes, rating } = req.body;
+
+  try {
+    await db.query(
+      "INSERT INTO books (title, author, isbn, notes, rating) VALUES ($1, $2, $3, $4, $5)",
+      [title, author, isbn, notes, rating]
+    );
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
+});
