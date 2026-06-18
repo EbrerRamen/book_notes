@@ -2,6 +2,26 @@
 
 <a href="/add">Add Book</a>
 
+<form method="GET" action="/">
+  <select name="sort" onchange="this.form.submit()">
+    <option value="newest" <%= currentSort === "newest" ? "selected" : "" %>>
+      Newest First
+    </option>
+
+    <option value="oldest" <%= currentSort === "oldest" ? "selected" : "" %>>
+      Oldest First
+    </option>
+
+    <option value="rating_desc" <%= currentSort === "rating_desc" ? "selected" : "" %>>
+      Highest Rated
+    </option>
+
+    <option value="rating_asc" <%= currentSort === "rating_asc" ? "selected" : "" %>>
+      Lowest Rated
+    </option>
+  </select>
+</form>
+
 <% books.forEach(book => { %>
   <div class="card">
     <h2><%= book.title %></h2>
