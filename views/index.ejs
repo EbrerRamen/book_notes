@@ -3,40 +3,63 @@
 <a href="/add">Add Book</a>
 
 <form method="GET" action="/">
-  <select name="sort" onchange="this.form.submit()">
-    <option value="newest" <%= currentSort === "newest" ? "selected" : "" %>>
-      Newest First
-    </option>
+    <!-- Preserve search -->
+    <input type="hidden" name="search" value="<%= searchQuery || '' %>" />
 
-    <option value="oldest" <%= currentSort === "oldest" ? "selected" : "" %>>
-      Oldest First
-    </option>
 
-    <option value="rating_desc" <%= currentSort === "rating_desc" ? "selected" : "" %>>
-      Highest Rated
-    </option>
+    <select name="sort" onchange="this.form.submit()">
+        <option value="newest" <%=currentSort==="newest" ? "selected" : "" %>>
+            Newest First
+        </option>
 
-    <option value="rating_asc" <%= currentSort === "rating_asc" ? "selected" : "" %>>
-      Lowest Rated
-    </option>
-  </select>
+        <option value="oldest" <%=currentSort==="oldest" ? "selected" : "" %>>
+            Oldest First
+        </option>
+
+        <option value="rating_desc" <%=currentSort==="rating_desc" ? "selected" : "" %>>
+            Highest Rated
+        </option>
+
+        <option value="rating_asc" <%=currentSort==="rating_asc" ? "selected" : "" %>>
+            Lowest Rated
+        </option>
+    </select>
 </form>
 
-<% books.forEach(book => { %>
-  <div class="card">
-    <h2><%= book.title %></h2>
-    <p><%= book.author %></p>
+<form method="GET" action="/" style="margin-bottom: 20px;">
 
-    <!-- Cover -->
-    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" />
+    <!-- Search Input -->
+    <input type="text" name="search" placeholder="Search by title or author..." value="<%= searchQuery || '' %>" />
 
-    <p><%= book.notes %></p>
-    <p>Rating: <%= book.rating %></p>
+    <!-- Keep sorting when searching -->
+    <input type="hidden" name="sort" value="<%= currentSort %>" />
 
-    <a href="/edit/<%= book.id %>">Edit</a>
+    <button type="submit">Search</button>
 
-    <form action="/delete/<%= book.id %>" method="POST">
-      <button>Delete</button>
-    </form>
-  </div>
-<% }) %>
+</form>
+
+<% books.forEach(book=> { %>
+    <div class="card">
+        <h2>
+            <%= book.title %>
+        </h2>
+        <p>
+            <%= book.author %>
+        </p>
+
+        <!-- Cover -->
+        <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" />
+
+        <p>
+            <%= book.notes %>
+        </p>
+        <p>Rating: <%= book.rating %>
+        </p>
+
+        <a href="/edit/<%= book.id %>">Edit</a>
+
+        <form action="/delete/<%= book.id %>" method="POST">
+            <button>Delete</button>
+        </form>
+    </div>
+    <% }) %>

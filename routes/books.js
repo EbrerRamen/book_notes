@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
     // Get sort type from query (default = newest)
     const sort = req.query.sort || "newest";
+    const search = req.query.search || "";
 
     let orderByClause;
 
@@ -31,8 +32,23 @@ router.get("/", async (req, res, next) => {
             break;
     }
     try {
-        const result = await db.query(`SELECT * FROM books ORDER BY ${orderByClause}`);
-        res.render("index.ejs", { books: result.rows, currentSort: sort, });
+        let result;
+
+        if (search) {
+            // Case-insensitive search using ILIKE (PostgreSQL)
+            result = await db.query(
+                `SELECT * FROM books 
+         WHERE title ILIKE $1 OR author ILIKE $1
+         ORDER BY ${orderByClause}`,
+                [`%${search}%`]
+            );
+        } else {
+            // No search → normal fetch
+            result = await db.query(
+                `SELECT * FROM books ORDER BY ${orderByClause}`
+            );
+        }
+        res.render("index.ejs", { books: result.rows, currentSort: sort, searchQuery: search, });
     } catch (err) {
         next(err); // send to global error handler
     }
