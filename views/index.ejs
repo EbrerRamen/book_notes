@@ -1,0 +1,22 @@
+<h1>Book Notes</h1>
+
+<a href="/add">Add Book</a>
+
+<% books.forEach(book => { %>
+  <div class="card">
+    <h2><%= book.title %></h2>
+    <p><%= book.author %></p>
+
+    <!-- Cover -->
+    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" />
+
+    <p><%= book.notes %></p>
+    <p>Rating: <%= book.rating %></p>
+
+    <a href="/edit/<%= book.id %>">Edit</a>
+
+    <form action="/delete/<%= book.id %>" method="POST">
+      <button>Delete</button>
+    </form>
+  </div>
+<% }) %>
