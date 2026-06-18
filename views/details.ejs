@@ -1,45 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title><%= book.title %></title>
-  <link rel="stylesheet" href="/styles.css" />
+    <meta charset="UTF-8" />
+    <title>
+        <%= book.title %>
+    </title>
+    <link rel="stylesheet" href="/styles.css" />
 </head>
+
 <body>
 
-  <h1><%= book.title %></h1>
-  <h3><%= book.author %></h3>
+    <h1>
+        <%= book.title %>
+    </h1>
+    <h3>
+        <%= book.author %>
+    </h3>
 
-  <!-- Book Cover -->
-  <img 
-    src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-L.jpg" 
-    alt="Book Cover"
-    style="max-width: 200px;"
-  />
+    <!-- Book Cover -->
+    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-L.jpg" alt="Book Cover"
+        style="max-width: 200px;" />
 
-  <p><strong>ISBN:</strong> <%= book.isbn %></p>
+    <p><strong>ISBN:</strong>
+        <%= book.isbn %>
+    </p>
 
-  <p><strong>Rating:</strong> <%= book.rating %> / 5</p>
+    <p><strong>Rating:</strong>
+        <%= book.rating %> / 5
+    </p>
 
-  <p><strong>Notes:</strong></p>
-  <p><%= book.notes %></p>
+    <p><strong>Summary:</strong></p>
+    <p>
+        <%= book.summary || "No summary provided" %>
+    </p>
 
-  <p><strong>Added on:</strong> 
-    <%= new Date(book.created_at).toLocaleString() %>
-  </p>
+    <hr />
 
-  <br />
+    <p><strong>Notes:</strong></p>
+    <p>
+        <%= book.notes %>
+    </p>
 
-  <!-- Actions -->
-  <a href="/edit/<%= book.id %>">Edit</a>
+    <p><strong>Added on:</strong>
+        <%= new Date(book.created_at).toLocaleString() %>
+    </p>
 
-  <form action="/delete/<%= book.id %>" method="POST" style="display:inline;">
-    <button type="submit">Delete</button>
-  </form>
+    <br />
 
-  <br /><br />
+    <!-- Actions -->
+    <a href="/edit/<%= book.id %>">Edit</a>
 
-  <a href="/">← Back to Home</a>
+    <form action="/delete/<%= book.id %>" method="POST" style="display:inline;">
+        <button type="submit">Delete</button>
+    </form>
+
+    <br /><br />
+
+    <a href="/">← Back to Home</a>
 
 </body>
+
 </html>

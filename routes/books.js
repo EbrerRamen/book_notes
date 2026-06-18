@@ -82,12 +82,12 @@ router.get("/add", (req, res) => {
 
 // Create book
 router.post("/add", async (req, res, next) => {
-    const { title, author, isbn, notes, rating } = req.body;
+    const { title, author, isbn, summary, notes, rating } = req.body;
 
     try {
         await db.query(
-            "INSERT INTO books (title, author, isbn, notes, rating) VALUES ($1, $2, $3, $4, $5)",
-            [title, author, isbn, notes, rating]
+            "INSERT INTO books (title, author, isbn, summary, notes, rating) VALUES ($1, $2, $3, $4, $5, $6)",
+            [title, author, isbn, summary, notes, rating]
         );
         res.redirect("/");
     } catch (err) {
@@ -110,12 +110,12 @@ router.get("/edit/:id", async (req, res, next) => {
 
 // Update book
 router.post("/edit/:id", async (req, res, next) => {
-    const { title, author, isbn, notes, rating } = req.body;
+    const { title, author, isbn, summary, notes, rating } = req.body;
 
     try {
         await db.query(
-            "UPDATE books SET title=$1, author=$2, isbn=$3, notes=$4, rating=$5 WHERE id=$6",
-            [title, author, isbn, notes, rating, req.params.id]
+            "UPDATE books SET title=$1, author=$2, isbn=$3, summary=$4, notes=$5, rating=$6 WHERE id=$7",
+            [title, author, isbn, summary, notes, rating, req.params.id]
         );
 
         res.redirect("/");

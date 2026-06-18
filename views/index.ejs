@@ -53,7 +53,7 @@
         <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" />
 
         <p>
-            <%= book.notes %>
+            <%= book.summary ? book.summary.substring(0, 100) : "No summary" %>
         </p>
         <p>Rating: <%= book.rating %>
         </p>
