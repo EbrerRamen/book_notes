@@ -13,3 +13,8 @@ router.get("/", async (req, res, next) => {
     next(err); // send to global error handler
   }
 });
+
+// Add book form
+router.get("/add", (req, res) => {
+  res.render("add.ejs");
+});
