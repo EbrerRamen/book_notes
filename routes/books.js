@@ -46,3 +46,19 @@ router.get("/edit/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+// ✏️ Update book
+router.post("/edit/:id", async (req, res, next) => {
+  const { title, author, isbn, notes, rating } = req.body;
+
+  try {
+    await db.query(
+      "UPDATE books SET title=$1, author=$2, isbn=$3, notes=$4, rating=$5 WHERE id=$6",
+      [title, author, isbn, notes, rating, req.params.id]
+    );
+
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
+});
