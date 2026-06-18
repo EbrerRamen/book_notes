@@ -34,7 +34,7 @@ router.post("/add", async (req, res, next) => {
   }
 });
 
-// ✏️ Edit form
+// Edit form
 router.get("/edit/:id", async (req, res, next) => {
   try {
     const result = await db.query("SELECT * FROM books WHERE id=$1", [
@@ -47,7 +47,7 @@ router.get("/edit/:id", async (req, res, next) => {
   }
 });
 
-// ✏️ Update book
+// Update book
 router.post("/edit/:id", async (req, res, next) => {
   const { title, author, isbn, notes, rating } = req.body;
 
@@ -62,3 +62,15 @@ router.post("/edit/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+// Delete book
+router.post("/delete/:id", async (req, res, next) => {
+  try {
+    await db.query("DELETE FROM books WHERE id=$1", [req.params.id]);
+    res.redirect("/");
+  } catch (err) {
+    next(err);
+  }
+});
+
+export default router;
