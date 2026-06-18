@@ -1,0 +1,10 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-logo">Book Notes</a>
+    <nav class="site-nav">
+      <a href="/" class="nav-link<%= typeof activeNav !== 'undefined' && activeNav === 'home' ? ' nav-link--active' : '' %>">Library</a>
+      <a href="/add" class="nav-link nav-link--cta<%= typeof activeNav !== 'undefined' && activeNav === 'add' ? ' nav-link--active' : '' %>">Add Book</a>
+    </nav>
+  </div>
+</header>
+<main class="container<%= typeof pageClass !== 'undefined' ? ' ' + pageClass : '' %>">

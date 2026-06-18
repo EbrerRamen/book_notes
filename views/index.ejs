@@ -1,67 +1,75 @@
-<h1>Book Notes</h1>
+<%- include('partials/head', { pageTitle: 'Library' }) %>
+<%- include('partials/header', { activeNav: 'home', pageClass: 'page-home' }) %>
 
-<a href="/add">Add Book</a>
+<h1 class="page-title">My Library</h1>
+<p class="page-subtitle"><%= books.length %> book<%= books.length === 1 ? '' : 's' %> in your collection</p>
 
-<form method="GET" action="/">
-    <!-- Preserve search -->
-    <input type="hidden" name="search" value="<%= searchQuery || '' %>" />
-
-
-    <select name="sort" onchange="this.form.submit()">
-        <option value="newest" <%=currentSort==="newest" ? "selected" : "" %>>
-            Newest First
-        </option>
-
-        <option value="oldest" <%=currentSort==="oldest" ? "selected" : "" %>>
-            Oldest First
-        </option>
-
-        <option value="rating_desc" <%=currentSort==="rating_desc" ? "selected" : "" %>>
-            Highest Rated
-        </option>
-
-        <option value="rating_asc" <%=currentSort==="rating_asc" ? "selected" : "" %>>
-            Lowest Rated
-        </option>
-    </select>
-</form>
-
-<form method="GET" action="/" style="margin-bottom: 20px;">
-
-    <!-- Search Input -->
-    <input type="text" name="search" placeholder="Search by title or author..." value="<%= searchQuery || '' %>" />
-
-    <!-- Keep sorting when searching -->
+<div class="toolbar">
+  <form method="GET" action="/" class="search-form">
     <input type="hidden" name="sort" value="<%= currentSort %>" />
+    <input
+      type="text"
+      name="search"
+      class="search-input"
+      placeholder="Search by title or author..."
+      value="<%= searchQuery || '' %>"
+    />
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
 
-    <button type="submit">Search</button>
+  <form method="GET" action="/" class="sort-form">
+    <input type="hidden" name="search" value="<%= searchQuery || '' %>" />
+    <select name="sort" onchange="this.form.submit()">
+      <option value="newest" <%= currentSort === "newest" ? "selected" : "" %>>Newest First</option>
+      <option value="oldest" <%= currentSort === "oldest" ? "selected" : "" %>>Oldest First</option>
+      <option value="rating_desc" <%= currentSort === "rating_desc" ? "selected" : "" %>>Highest Rated</option>
+      <option value="rating_asc" <%= currentSort === "rating_asc" ? "selected" : "" %>>Lowest Rated</option>
+    </select>
+  </form>
+</div>
 
-</form>
-
-<% books.forEach(book=> { %>
-    <div class="card">
-        <a href="/book/<%= book.id %>">
-            <h2>
-                <%= book.title %>
-            </h2>
+<% if (books.length === 0) { %>
+  <div class="empty-state">
+    <h2 class="empty-state__title"><%= searchQuery ? 'No matches found' : 'No books yet' %></h2>
+    <p class="empty-state__text">
+      <%= searchQuery ? 'Try a different search term.' : 'Start building your reading journal by adding your first book.' %>
+    </p>
+    <% if (!searchQuery) { %>
+      <a href="/add" class="btn btn-primary">Add Your First Book</a>
+    <% } %>
+  </div>
+<% } else { %>
+  <div class="book-grid">
+    <% books.forEach(book => { %>
+      <article class="book-card">
+        <a href="/book/<%= book.id %>" class="book-card__cover-link">
+          <img
+            class="book-card__cover"
+            src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg"
+            alt="<%= book.title %> cover"
+            loading="lazy"
+            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22300%22%3E%3Crect fill=%22%23f0e4dc%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%237a3e2e%22 font-family=%22serif%22 font-size=%2214%22%3ENo Cover%3C/text%3E%3C/svg%3E'"
+          />
         </a>
-        <p>
-            <%= book.author %>
-        </p>
-
-        <!-- Cover -->
-        <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-M.jpg" />
-
-        <p>
-            <%= book.summary ? book.summary.substring(0, 100) : "No summary" %>
-        </p>
-        <p>Rating: <%= book.rating %>
-        </p>
-
-        <a href="/edit/<%= book.id %>">Edit</a>
-
-        <form action="/delete/<%= book.id %>" method="POST">
-            <button>Delete</button>
-        </form>
-    </div>
+        <div class="book-card__body">
+          <h2 class="book-card__title">
+            <a href="/book/<%= book.id %>"><%= book.title %></a>
+          </h2>
+          <p class="book-card__author"><%= book.author %></p>
+          <p class="book-card__summary"><%= book.summary ? book.summary.substring(0, 100) : "No summary" %></p>
+          <div class="book-card__footer">
+            <%- include('partials/rating', { rating: book.rating }) %>
+            <div class="book-card__actions">
+              <a href="/edit/<%= book.id %>" class="btn btn-secondary btn-sm">Edit</a>
+              <form action="/delete/<%= book.id %>" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this book?')">Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </article>
     <% }) %>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

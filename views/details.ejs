@@ -1,64 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('partials/head', { pageTitle: book.title }) %>
+<%- include('partials/header', { activeNav: 'home', pageClass: 'page-detail' }) %>
 
-<head>
-    <meta charset="UTF-8" />
-    <title>
-        <%= book.title %>
-    </title>
-    <link rel="stylesheet" href="/styles.css" />
-</head>
+<div class="detail-layout">
+  <div>
+    <img
+      class="detail-cover"
+      src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-L.jpg"
+      alt="<%= book.title %> cover"
+      onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22300%22%3E%3Crect fill=%22%23f0e4dc%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%237a3e2e%22 font-family=%22serif%22 font-size=%2214%22%3ENo Cover%3C/text%3E%3C/svg%3E'"
+    />
+  </div>
 
-<body>
+  <div>
+    <div class="detail-meta">
+      <h1 class="page-title"><%= book.title %></h1>
+      <p class="detail-author"><%= book.author %></p>
+    </div>
 
-    <h1>
-        <%= book.title %>
-    </h1>
-    <h3>
-        <%= book.author %>
-    </h3>
+    <div class="detail-info">
+      <div><strong>ISBN:</strong> <%= book.isbn %></div>
+      <div><%- include('partials/rating', { rating: book.rating }) %></div>
+      <div><strong>Added:</strong> <%= new Date(book.created_at).toLocaleString() %></div>
+    </div>
 
-    <!-- Book Cover -->
-    <img src="https://covers.openlibrary.org/b/isbn/<%= book.isbn %>-L.jpg" alt="Book Cover"
-        style="max-width: 200px;" />
+    <section class="detail-section">
+      <h2 class="detail-section__label">Summary</h2>
+      <p class="detail-section__content"><%= book.summary || "No summary provided" %></p>
+    </section>
 
-    <p><strong>ISBN:</strong>
-        <%= book.isbn %>
-    </p>
+    <section class="detail-section">
+      <h2 class="detail-section__label">Notes</h2>
+      <p class="detail-section__content"><%= book.notes || "No notes yet" %></p>
+    </section>
 
-    <p><strong>Rating:</strong>
-        <%= book.rating %> / 5
-    </p>
+    <div class="detail-actions">
+      <a href="/edit/<%= book.id %>" class="btn btn-primary">Edit</a>
+      <form action="/delete/<%= book.id %>" method="POST">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this book?')">Delete</button>
+      </form>
+      <a href="/" class="btn btn-secondary">Back to Library</a>
+    </div>
+  </div>
+</div>
 
-    <p><strong>Summary:</strong></p>
-    <p>
-        <%= book.summary || "No summary provided" %>
-    </p>
-
-    <hr />
-
-    <p><strong>Notes:</strong></p>
-    <p>
-        <%= book.notes %>
-    </p>
-
-    <p><strong>Added on:</strong>
-        <%= new Date(book.created_at).toLocaleString() %>
-    </p>
-
-    <br />
-
-    <!-- Actions -->
-    <a href="/edit/<%= book.id %>">Edit</a>
-
-    <form action="/delete/<%= book.id %>" method="POST" style="display:inline;">
-        <button type="submit">Delete</button>
-    </form>
-
-    <br /><br />
-
-    <a href="/">← Back to Home</a>
-
-</body>
-
-</html>
+<%- include('partials/footer') %>
