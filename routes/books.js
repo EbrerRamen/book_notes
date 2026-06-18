@@ -33,3 +33,16 @@ router.post("/add", async (req, res, next) => {
     next(err);
   }
 });
+
+// ✏️ Edit form
+router.get("/edit/:id", async (req, res, next) => {
+  try {
+    const result = await db.query("SELECT * FROM books WHERE id=$1", [
+      req.params.id,
+    ]);
+
+    res.render("edit.ejs", { book: result.rows[0] });
+  } catch (err) {
+    next(err);
+  }
+});
